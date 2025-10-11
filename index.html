@@ -9,30 +9,34 @@
     <style>
         body { 
             font-family: 'Inter', sans-serif; 
-            background-color: #f8fafc; /* A light slate color */
         }
         .hidden { display: none; }
         .bg-main-gradient {
-            background-image: linear-gradient(to top right, #eff6ff, #e0e7ff);
+            /* Dark mode gradient */
+            background-image: linear-gradient(to top right, #111827, #1f2937);
+        }
+        /* Style for date picker icon in dark mode */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
         }
     </style>
 </head>
-<body class="bg-main-gradient text-slate-800">
+<body class="bg-main-gradient text-slate-200">
 
     <!-- Main Content -->
     <div class="container mx-auto p-4 sm:p-6 lg:p-8 min-h-screen flex flex-col">
         <header class="text-center mb-10">
-            <h1 class="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-600 to-indigo-700 bg-clip-text text-transparent pb-2">University Admission Dates 2025-26</h1>
-            <p class="text-md text-slate-600 mt-2">A real-time guide for all admission test schedules.</p>
+            <h1 class="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent pb-2">University Admission Dates 2025-26</h1>
+            <p class="text-md text-slate-400 mt-2">A real-time guide for all admission test schedules.</p>
         </header>
 
         <main class="flex-grow">
             <!-- Admin Login Section (HIDDEN BY DEFAULT) -->
-            <div id="admin-login-section" class="mb-6 bg-white/80 backdrop-blur-sm p-4 rounded-xl shadow-md border border-slate-200 hidden">
-                <h3 class="font-bold mb-3 text-center text-slate-700">Admin Login</h3>
+            <div id="admin-login-section" class="mb-6 bg-slate-800/80 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-slate-700 hidden">
+                <h3 class="font-bold mb-3 text-center text-slate-300">Admin Login</h3>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="email" id="admin-email" placeholder="Email" class="flex-grow px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                    <input type="password" id="admin-password" placeholder="Password" class="flex-grow px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                    <input type="email" id="admin-email" placeholder="Email" class="flex-grow px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-700 text-white placeholder-slate-400">
+                    <input type="password" id="admin-password" placeholder="Password" class="flex-grow px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-700 text-white placeholder-slate-400">
                     <button id="login-button" class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Login</button>
                 </div>
             </div>
@@ -51,44 +55,44 @@
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                      <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
                 </div>
-                <input type="text" id="searchInput" placeholder="Search for a university..." class="w-full px-4 py-3 pl-11 border border-slate-300 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                <input type="text" id="searchInput" placeholder="Search for a university..." class="w-full px-4 py-3 pl-11 border border-slate-600 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-800 text-white placeholder-slate-400">
             </div>
 
-            <div class="overflow-x-auto bg-white/80 backdrop-blur-sm rounded-xl shadow-md border border-slate-200">
+            <div class="overflow-x-auto bg-slate-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-slate-700">
                 <table class="min-w-full" id="uniTable">
-                    <thead class="border-b border-slate-200">
+                    <thead class="border-b border-slate-700">
                         <tr>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">University Name & Unit</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Test Date</th>
-                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Time Remaining</th>
-                            <th class="px-6 py-4 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider">Circular</th>
-                            <th id="admin-actions-header" class="px-6 py-4 text-center text-xs font-semibold text-slate-500 uppercase tracking-wider hidden">Actions</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">University Name & Unit</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Test Date</th>
+                            <th class="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Time Remaining</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold text-slate-400 uppercase tracking-wider">Circular</th>
+                            <th id="admin-actions-header" class="px-6 py-4 text-center text-xs font-semibold text-slate-400 uppercase tracking-wider hidden">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="universityData" class="divide-y divide-slate-200">
+                    <tbody id="universityData" class="divide-y divide-slate-700">
                         <!-- Data will be dynamically inserted here from Firestore -->
                     </tbody>
                 </table>
             </div>
         </main>
-        <footer class="text-center mt-12 text-slate-500 text-sm">
+        <footer class="text-center mt-12 text-slate-400 text-sm">
              <p>&copy; 2025 Admission Schedule Tracker. All rights reserved.</p>
-            <p class="mt-1">Created by MD MINHAZUL ISLAM BAIZID</p>
+             <p class="mt-1">Created by MD MINHAZUL ISLAM BAIZID</p>
         </footer>
     </div>
 
     <!-- Add/Edit Modal -->
-    <div id="form-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-xl shadow-2xl p-6 w-full max-w-md border border-slate-200">
-            <h2 id="modal-title" class="text-2xl font-bold mb-5 text-slate-800">Add New University</h2>
+    <div id="form-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-md border border-slate-700">
+            <h2 id="modal-title" class="text-2xl font-bold mb-5 text-slate-100">Add New University</h2>
             <input type="hidden" id="edit-id">
             <div class="space-y-4">
-                <input type="text" id="uni-name" placeholder="University Name & Unit" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                <input type="date" id="uni-date" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                <input type="url" id="uni-circular" placeholder="Circular Link (e.g., https://...)" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                <input type="text" id="uni-name" placeholder="University Name & Unit" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-700 text-white placeholder-slate-400">
+                <input type="date" id="uni-date" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-700 text-white placeholder-slate-400">
+                <input type="url" id="uni-circular" placeholder="Circular Link (e.g., https://...)" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-700 text-white placeholder-slate-400">
             </div>
             <div class="mt-6 flex justify-end gap-3">
-                <button id="cancel-button" class="bg-slate-200 text-slate-800 font-semibold px-4 py-2 rounded-lg hover:bg-slate-300 transition-colors">Cancel</button>
+                <button id="cancel-button" class="bg-slate-600 text-slate-200 font-semibold px-4 py-2 rounded-lg hover:bg-slate-500 transition-colors">Cancel</button>
                 <button id="save-button" class="bg-indigo-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-indigo-700 transition-colors shadow-sm">Save</button>
             </div>
         </div>
@@ -158,30 +162,31 @@
 
                 universityTableBody.innerHTML = '';
                 if (filteredData.length === 0) {
-                    universityTableBody.innerHTML = `<tr><td colspan="5" class="text-center py-12 px-6 text-slate-500">No universities found. Log in to add one!</td></tr>`;
+                    universityTableBody.innerHTML = `<tr><td colspan="5" class="text-center py-12 px-6 text-slate-400">No universities found. Log in to add one!</td></tr>`;
                     return;
                 }
                 
                 filteredData.forEach((uni, index) => {
                     const testDate = new Date(uni.testDateISO + 'T00:00:00');
                     const formattedDate = testDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-                    const rowClass = index % 2 === 0 ? 'bg-white' : 'bg-slate-50/50';
+                    // Alternating dark background for rows
+                    const rowClass = index % 2 === 0 ? 'bg-slate-800/50' : 'bg-slate-900/20';
                     
                     let rowHTML = `
                         <tr class="${rowClass}">
-                            <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-semibold text-slate-900">${uni.name}</div></td>
-                            <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-slate-700">${formattedDate}</div></td>
-                            <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-slate-700 countdown-timer" data-test-date="${uni.testDateISO}T09:00:00">Calculating...</td>
+                            <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-semibold text-slate-100">${uni.name}</div></td>
+                            <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-slate-300">${formattedDate}</div></td>
+                            <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-slate-300 countdown-timer" data-test-date="${uni.testDateISO}T09:00:00">Calculating...</td>
                             <td class="px-6 py-4 text-center">
-                                <a href="${uni.circularLink || '#'}" target="_blank" class="inline-block bg-indigo-600 text-white font-semibold py-1 px-4 rounded-full text-xs ${!uni.circularLink ? 'opacity-40 cursor-not-allowed bg-slate-400' : 'hover:bg-indigo-700 transition-colors'}">View</a>
+                                <a href="${uni.circularLink || '#'}" target="_blank" class="inline-block bg-indigo-600 text-white font-semibold py-1 px-4 rounded-full text-xs ${!uni.circularLink ? 'opacity-40 cursor-not-allowed bg-slate-600' : 'hover:bg-indigo-700 transition-colors'}">View</a>
                             </td>
                     `;
 
                     if (currentUser) {
                         rowHTML += `
                             <td class="px-6 py-4 text-center whitespace-nowrap">
-                                <button class="edit-button text-blue-600 hover:text-blue-800 font-medium" data-id="${uni.id}">Edit</button>
-                                <button class="delete-button text-red-600 hover:text-red-800 font-medium ml-4" data-id="${uni.id}">Delete</button>
+                                <button class="edit-button text-blue-400 hover:text-blue-300 font-medium" data-id="${uni.id}">Edit</button>
+                                <button class="delete-button text-red-500 hover:text-red-400 font-medium ml-4" data-id="${uni.id}">Delete</button>
                             </td>`;
                     }
                     rowHTML += `</tr>`;
@@ -194,17 +199,17 @@
                 document.querySelectorAll('.countdown-timer').forEach(el => {
                     const distance = new Date(el.dataset.testDate).getTime() - new Date().getTime();
                     if (distance < 0) {
-                        el.innerHTML = `<span class="text-red-600 font-semibold">Exam Finished</span>`;
+                        el.innerHTML = `<span class="text-slate-500 font-semibold">Exam Finished</span>`;
                         return;
                     }
                     const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                     const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                     const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    el.innerHTML = `<span class="font-bold text-red-600">${days}d ${hours}h ${minutes}m</span>`;
+                    el.innerHTML = `<span class="font-bold text-teal-400">${days}d ${hours}h ${minutes}m</span>`;
                 });
             }
             setInterval(updateTimers, 60000);
-            updateTimers(); // Initial call
+            updateTimers(); 
 
             searchInput.addEventListener('keyup', populateTable);
 
@@ -256,8 +261,9 @@
                 }
                 
                 if (target.classList.contains('delete-button')) {
-                    if(confirm('Are you sure you want to delete this entry?')) {
-                        deleteDoc(doc(db, "universities", id));
+                    // Custom confirm dialog logic needed here for iframe compatibility
+                    if (confirm('Are you sure you want to delete this entry?')) {
+                         deleteDoc(doc(db, "universities", id));
                     }
                 }
             });
@@ -268,6 +274,7 @@
                 signInWithEmailAndPassword(auth, email, password)
                     .catch(error => { 
                         console.error("Login Error:", error);
+                        // Custom alert/message box logic needed here for iframe compatibility
                         alert("Login failed. Please check your credentials."); 
                     });
             });
