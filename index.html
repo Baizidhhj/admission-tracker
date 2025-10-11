@@ -21,8 +21,8 @@
         </header>
 
         <main>
-            <!-- Admin Login Section -->
-            <div id="admin-login-section" class="mb-6 bg-white p-4 rounded-lg shadow">
+            <!-- Admin Login Section (HIDDEN BY DEFAULT) -->
+            <div id="admin-login-section" class="mb-6 bg-white p-4 rounded-lg shadow hidden">
                 <h3 class="font-bold mb-2 text-center">Admin Login</h3>
                 <div class="flex flex-col sm:flex-row gap-2">
                     <input type="email" id="admin-email" placeholder="Email" class="flex-grow px-3 py-2 border rounded-md">
@@ -102,7 +102,6 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
 
-        // This ensures the script runs only after the full page is loaded
         document.addEventListener('DOMContentLoaded', () => {
             let universities = [];
             let currentUser = null;
@@ -113,22 +112,30 @@
             const adminActionsHeader = document.getElementById('admin-actions-header');
             const searchInput = document.getElementById('searchInput');
 
-            // Listen for real-time updates from Firestore
+            // NEW: Listen for keyboard shortcut to show login form
+            document.addEventListener('keydown', (e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
+                    e.preventDefault(); // Prevent browser's default action
+                    if (!currentUser) { // Only show if not logged in
+                        adminLoginSection.classList.toggle('hidden');
+                    }
+                }
+            });
+
             const q = query(collection(db, "universities"), orderBy("testDateISO"));
             onSnapshot(q, (snapshot) => {
                 universities = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
                 populateTable();
             });
 
-            // Check authentication state
             onAuthStateChanged(auth, (user) => {
                 currentUser = user;
                 if (user) {
-                    adminLoginSection.classList.add('hidden');
+                    adminLoginSection.classList.add('hidden'); // Always hide login form when logged in
                     adminControls.classList.remove('hidden');
                     adminActionsHeader.classList.remove('hidden');
                 } else {
-                    adminLoginSection.classList.remove('hidden');
+                    // Don't show login form automatically, wait for shortcut
                     adminControls.classList.add('hidden');
                     adminActionsHeader.classList.add('hidden');
                 }
@@ -141,7 +148,7 @@
 
                 universityTable.innerHTML = '';
                 if (filteredData.length === 0) {
-                     universityTable.innerHTML = `<tr><td colspan="5" class="text-center py-10 px-6 text-gray-500">No universities found. Log in to add one!</td></tr>`;
+                     universityTable.innerHTML = `<tr><td colspan="5" class="text-center py-10 px-6 text-gray-500">No universities found.</td></tr>`;
                      return;
                 }
                 
@@ -173,7 +180,6 @@
                 updateTimers();
             }
 
-            // Countdown Timer Logic
             function updateTimers() {
                 document.querySelectorAll('.countdown-timer').forEach(el => {
                     const distance = new Date(el.dataset.testDate).getTime() - new Date().getTime();
@@ -191,7 +197,6 @@
 
             searchInput.addEventListener('keyup', populateTable);
 
-            // Modal Logic
             const modal = document.getElementById('form-modal');
             const saveButton = document.getElementById('save-button');
             const cancelButton = document.getElementById('cancel-button');
@@ -249,7 +254,6 @@
                 }
             });
 
-            // Auth listeners
             document.getElementById('login-button').addEventListener('click', () => {
                 const email = document.getElementById('admin-email').value;
                 const password = document.getElementById('admin-password').value;
@@ -262,3 +266,4 @@
     </script>
 </body>
 </html>
+
