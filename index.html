@@ -43,8 +43,8 @@
                             <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                 Time Remaining
                             </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status / Note
+                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Circular
                             </th>
                         </tr>
                     </thead>
@@ -63,17 +63,17 @@
 
     <script>
         const universities = [
-            { name: 'Dhaka University (DU) - IBA Unit', testDate: 'Nov 28, 2025', testDateISO: '2025-11-28T09:00:00', status: 'Tentative Dates Announced' },
-            { name: 'Dhaka University (DU) - CHA Unit', testDate: 'Nov 29, 2025', testDateISO: '2025-11-29T09:00:00', status: 'Tentative Dates Announced' },
-            { name: 'Dhaka University (DU) - C Unit', testDate: 'Dec 6, 2025', testDateISO: '2025-12-06T09:00:00', status: 'Tentative Dates Announced' },
-            { name: 'Medical and Dental Colleges', testDate: 'Dec 12, 2025', testDateISO: '2025-12-12T09:00:00', status: 'Confirmed' },
-            { name: 'Dhaka University (DU) - A Unit', testDate: 'Dec 13, 2025', testDateISO: '2025-12-13T09:00:00', status: 'Tentative Dates Announced' },
-            { name: 'Dhaka University (DU) - B Unit', testDate: 'Dec 20, 2025', testDateISO: '2025-12-20T09:00:00', status: 'Tentative Dates Announced' },
-            { name: 'Rajshahi University of Engineering & Technology (RUET) - Preliminary (MCQ)', testDate: 'Jan 3, 2026', testDateISO: '2026-01-03T09:00:00', status: 'Tentative Dates Announced' },
-            { name: 'Rajshahi University (RU) - C Unit (Science)', testDate: 'Jan 16, 2026', testDateISO: '2026-01-16T09:00:00', status: 'Confirmed' },
-            { name: 'Rajshahi University (RU) - A Unit (Humanities)', testDate: 'Jan 17, 2026', testDateISO: '2026-01-17T09:00:00', status: 'Confirmed' },
-            { name: 'Rajshahi University of Engineering & Technology (RUET) - Written Exam', testDate: 'Jan 23, 2026', testDateISO: '2026-01-23T09:00:00', status: 'Tentative Dates Announced' },
-            { name: 'Rajshahi University (RU) - B Unit (Commerce)', testDate: 'Jan 24, 2026', testDateISO: '2026-01-24T09:00:00', status: 'Confirmed' },
+             { name: 'Dhaka University (DU) - IBA Unit', testDate: 'Nov 28, 2025', testDateISO: '2025-11-28T09:00:00', circularLink: '#' },
+            { name: 'Dhaka University (DU) - CHA Unit', testDate: 'Nov 29, 2025', testDateISO: '2025-11-29T09:00:00', circularLink: '#' },
+            { name: 'Dhaka University (DU) - C Unit', testDate: 'Dec 6, 2025', testDateISO: '2025-12-06T09:00:00', circularLink: '#' },
+            { name: 'Medical and Dental Colleges', testDate: 'Dec 12, 2025', testDateISO: '2025-12-12T09:00:00', circularLink: '#' },
+            { name: 'Dhaka University (DU) - A Unit', testDate: 'Dec 13, 2025', testDateISO: '2025-12-13T09:00:00', circularLink: '#' },
+            { name: 'Dhaka University (DU) - B Unit', testDate: 'Dec 20, 2025', testDateISO: '2025-12-20T09:00:00', circularLink: '#' },
+            { name: 'Rajshahi University of Engineering & Technology (RUET) - Preliminary (MCQ)', testDate: 'Jan 3, 2026', testDateISO: '2026-01-03T09:00:00', circularLink: '#' },
+            { name: 'Rajshahi University (RU) - C Unit (Science)', testDate: 'Jan 16, 2026', testDateISO: '2026-01-16T09:00:00', circularLink: '#' },
+            { name: 'Rajshahi University (RU) - A Unit (Humanities)', testDate: 'Jan 17, 2026', testDateISO: '2026-01-17T09:00:00', circularLink: '#' },
+            { name: 'Rajshahi University of Engineering & Technology (RUET) - Written Exam', testDate: 'Jan 23, 2026', testDateISO: '2026-01-23T09:00:00', circularLink: '#' },
+            { name: 'Rajshahi University (RU) - B Unit (Commerce)', testDate: 'Jan 24, 2026', testDateISO: '2026-01-24T09:00:00', circularLink: '#' },
         ];
 
 
@@ -98,13 +98,10 @@
                         <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-gray-800 countdown-timer" data-test-date="${uni.testDateISO}">
                             Calculating...
                         </td>
-                         <td class="px-6 py-4 whitespace-nowrap">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                uni.status.includes('Confirmed') ? 'bg-green-100 text-green-800' :
-                                uni.status.includes('Tentative') || uni.status.includes('Likely') ? 'bg-yellow-100 text-yellow-800' : 'bg-red-100 text-red-800'
-                            }">
-                                ${uni.status}
-                            </span>
+                         <td class="px-6 py-4 whitespace-nowrap text-center">
+                            <a href="${uni.circularLink}" target="_blank" rel="noopener noreferrer" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded-lg text-xs transition duration-150 ease-in-out ${uni.circularLink === '#' ? 'opacity-50 cursor-not-allowed' : ''}" ${uni.circularLink === '#' ? 'onclick="return false;"' : ''}>
+                                View
+                            </a>
                         </td>
                     </tr>
                 `;
