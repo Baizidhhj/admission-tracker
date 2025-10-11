@@ -5,146 +5,278 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bangladesh University Admission Dates 2025-26</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
+        body { font-family: 'Inter', sans-serif; }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
+    <!-- Main Content -->
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
         <header class="text-center mb-8">
             <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">University Admission Dates 2025-26</h1>
-            <p class="text-md text-gray-600 mt-2">For students who passed HSC in 2025. Your one-stop guide for all admission test schedules.</p>
-            <p class="text-sm text-red-500 mt-1 font-medium">Disclaimer: All dates are tentative based on news reports. Always verify with the official university website.</p>
+            <p class="text-md text-gray-600 mt-2">A real-time guide for all admission test schedules.</p>
         </header>
 
         <main>
-            <!-- Search Input -->
-            <div class="mb-6">
-                <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search for a university or unit..." class="w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 transition duration-150 ease-in-out">
+            <!-- Admin Login Section - Initially Hidden -->
+            <div id="admin-login-section" class="mb-6 bg-white p-4 rounded-lg shadow hidden">
+                <h3 class="font-bold mb-2 text-center">Admin Login</h3>
+                <div class="flex flex-col sm:flex-row gap-2">
+                    <input type="email" id="admin-email" placeholder="Email" class="flex-grow px-3 py-2 border rounded-md">
+                    <input type="password" id="admin-password" placeholder="Password" class="flex-grow px-3 py-2 border rounded-md">
+                    <button id="login-button" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700">Login</button>
+                </div>
             </div>
 
-            <!-- University Dates Table -->
+             <!-- Admin Controls - Shown when logged in -->
+            <div id="admin-controls" class="hidden text-right mb-4">
+                 <button id="add-new-button" class="bg-green-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-green-700">Add New University</button>
+                 <button id="logout-button" class="bg-red-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-red-700 ml-2">Logout</button>
+            </div>
+
+
+            <!-- Search and Table -->
+             <div class="mb-6">
+                <input type="text" id="searchInput" onkeyup="filterTable()" placeholder="Search for a university..." class="w-full px-4 py-3 border rounded-lg shadow-sm">
+            </div>
             <div class="overflow-x-auto bg-white rounded-lg shadow">
                 <table class="min-w-full divide-y divide-gray-200" id="uniTable">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                University Name & Unit
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Admission Test Date
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Time Remaining
-                            </th>
-                            <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Circular
-                            </th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">University Name & Unit</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Test Date</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Time Remaining</th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Circular</th>
+                            <th id="admin-actions-header" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase hidden">Actions</th>
                         </tr>
                     </thead>
                     <tbody id="universityData" class="bg-white divide-y divide-gray-200">
-                        <!-- Data will be inserted here by JavaScript -->
+                        <!-- Data will be dynamically inserted here from Firestore -->
                     </tbody>
                 </table>
             </div>
         </main>
-
         <footer class="text-center mt-10 text-gray-500 text-sm">
-            <p>&copy; 2025 Admission Schedule Tracker. All rights reserved.</p>
+             <p>&copy; 2025 Admission Schedule Tracker. All rights reserved.</p>
             <p class="mt-2 font-medium">Created by MD MINHAZUL ISLAM BAIZID</p>
-            <p class="mt-1">Please double-check all dates on the respective university's official website before taking any steps.</p>
         </footer>
     </div>
 
-    <script>
-        const universities = [
-             { name: 'Dhaka University (DU) - IBA Unit', testDate: 'Nov 28, 2025', testDateISO: '2025-11-28T09:00:00', circularLink: '#' },
-            { name: 'Dhaka University (DU) - CHA Unit', testDate: 'Nov 29, 2025', testDateISO: '2025-11-29T09:00:00', circularLink: '#' },
-            { name: 'Dhaka University (DU) - C Unit', testDate: 'Dec 6, 2025', testDateISO: '2025-12-06T09:00:00', circularLink: '#' },
-            { name: 'Medical and Dental Colleges', testDate: 'Dec 12, 2025', testDateISO: '2025-12-12T09:00:00', circularLink: '#' },
-            { name: 'Dhaka University (DU) - A Unit', testDate: 'Dec 13, 2025', testDateISO: '2025-12-13T09:00:00', circularLink: '#' },
-            { name: 'Dhaka University (DU) - B Unit', testDate: 'Dec 20, 2025', testDateISO: '2025-12-20T09:00:00', circularLink: '#' },
-            { name: 'Rajshahi University of Engineering & Technology (RUET) - Preliminary (MCQ)', testDate: 'Jan 3, 2026', testDateISO: '2026-01-03T09:00:00', circularLink: '#' },
-            { name: 'Rajshahi University (RU) - C Unit (Science)', testDate: 'Jan 16, 2026', testDateISO: '2026-01-16T09:00:00', circularLink: '#' },
-            { name: 'Rajshahi University (RU) - A Unit (Humanities)', testDate: 'Jan 17, 2026', testDateISO: '2026-01-17T09:00:00', circularLink: '#' },
-            { name: 'Rajshahi University of Engineering & Technology (RUET) - Written Exam', testDate: 'Jan 23, 2026', testDateISO: '2026-01-23T09:00:00', circularLink: '#' },
-            { name: 'Rajshahi University (RU) - B Unit (Commerce)', testDate: 'Jan 24, 2026', testDateISO: '2026-01-24T09:00:00', circularLink: '#' },
-        ];
+    <!-- Add/Edit Modal -->
+    <div id="form-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md">
+            <h2 id="modal-title" class="text-2xl font-bold mb-4">Add New University</h2>
+            <input type="hidden" id="edit-id">
+            <div class="space-y-4">
+                <input type="text" id="uni-name" placeholder="University Name & Unit" class="w-full px-3 py-2 border rounded-md">
+                <input type="date" id="uni-date" class="w-full px-3 py-2 border rounded-md">
+                <input type="url" id="uni-circular" placeholder="https://..." class="w-full px-3 py-2 border rounded-md">
+            </div>
+            <div class="mt-6 flex justify-end gap-3">
+                <button id="cancel-button" class="bg-gray-300 text-gray-800 px-4 py-2 rounded-md hover:bg-gray-400">Cancel</button>
+                <button id="save-button" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700">Save</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, deleteDoc, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+        // ===================================================================================
+        // PASTE YOUR FIREBASE CONFIGURATION OBJECT HERE
+        // ===================================================================================
+        // Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyA9ZAX3u7S9zdUL7NJ0hUgALRrKgwbRN5c",
+  authDomain: "admission-tracker-bd.firebaseapp.com",
+  projectId: "admission-tracker-bd",
+  storageBucket: "admission-tracker-bd.firebasestorage.app",
+  messagingSenderId: "81426020951",
+  appId: "1:81426020951:web:58902a97d2d6281aad0112"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+        // ===================================================================================
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        let universities = [];
+        let currentUser = null;
 
         const universityTable = document.getElementById('universityData');
+        const adminControls = document.getElementById('admin-controls');
+        const adminLoginSection = document.getElementById('admin-login-section');
+        const adminActionsHeader = document.getElementById('admin-actions-header');
 
-        function populateTable(data) {
-            universityTable.innerHTML = ''; // Clear existing data
-            if (data.length === 0) {
-                 universityTable.innerHTML = `<tr><td colspan="4" class="text-center py-10 px-6 text-gray-500">No universities found matching your search.</td></tr>`;
+        // Listen for real-time updates from Firestore
+        const q = query(collection(db, "universities"), orderBy("testDateISO"));
+        onSnapshot(q, (snapshot) => {
+            universities = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            populateTable();
+        });
+
+        // Check authentication state
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            if (user) {
+                // User is logged in
+                adminLoginSection.classList.add('hidden');
+                adminControls.classList.remove('hidden');
+                adminActionsHeader.classList.remove('hidden');
+            } else {
+                // User is logged out
+                adminLoginSection.classList.remove('hidden');
+                adminControls.classList.add('hidden');
+                adminActionsHeader.classList.add('hidden');
+            }
+            populateTable(); // Re-render table to show/hide admin buttons
+        });
+        
+        function populateTable() {
+            const filter = document.getElementById('searchInput').value.toLowerCase();
+            const filteredData = universities.filter(uni => uni.name.toLowerCase().includes(filter));
+
+            universityTable.innerHTML = '';
+            if (filteredData.length === 0) {
+                 universityTable.innerHTML = `<tr><td colspan="5" class="text-center py-10 px-6 text-gray-500">No universities found.</td></tr>`;
                  return;
             }
-            data.sort((a, b) => new Date(a.testDateISO) - new Date(b.testDateISO)); // Sort by date
-            data.forEach(uni => {
-                const row = `
-                    <tr class="hover:bg-gray-50 transition duration-150 ease-in-out">
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm font-medium text-gray-900">${uni.name}</div>
+            
+            filteredData.forEach(uni => {
+                const testDate = new Date(uni.testDateISO + 'T00:00:00');
+                const formattedDate = testDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+                
+                let row = `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-medium">${uni.name}</div></td>
+                        <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm">${formattedDate}</div></td>
+                        <td class="px-6 py-4 whitespace-nowrap font-mono text-sm countdown-timer" data-test-date="${uni.testDateISO}T09:00:00">Calculating...</td>
+                        <td class="px-6 py-4 text-center">
+                            <a href="${uni.circularLink || '#'}" target="_blank" class="inline-block bg-indigo-600 text-white font-bold py-2 px-3 rounded-lg text-xs ${!uni.circularLink ? 'opacity-50 cursor-not-allowed' : 'hover:bg-indigo-700'}">View</a>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <div class="text-sm text-gray-800">${uni.testDate}</div>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-gray-800 countdown-timer" data-test-date="${uni.testDateISO}">
-                            Calculating...
-                        </td>
-                         <td class="px-6 py-4 whitespace-nowrap text-center">
-                            <a href="${uni.circularLink}" target="_blank" rel="noopener noreferrer" class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-3 rounded-lg text-xs transition duration-150 ease-in-out ${uni.circularLink === '#' ? 'opacity-50 cursor-not-allowed' : ''}" ${uni.circularLink === '#' ? 'onclick="return false;"' : ''}>
-                                View
-                            </a>
-                        </td>
-                    </tr>
                 `;
+
+                if (currentUser) {
+                    row += `
+                        <td class="px-6 py-4 text-center whitespace-nowrap">
+                            <button class="edit-button text-blue-600 hover:text-blue-800" data-id="${uni.id}">Edit</button>
+                            <button class="delete-button text-red-600 hover:text-red-800 ml-4" data-id="${uni.id}">Delete</button>
+                        </td>
+                    `;
+                }
+                 row += `</tr>`;
                 universityTable.innerHTML += row;
             });
+            updateTimers();
         }
 
+        // Countdown Timer Logic
         function updateTimers() {
-            const timerElements = document.querySelectorAll('.countdown-timer');
-            timerElements.forEach(el => {
-                const countDownDate = new Date(el.dataset.testDate).getTime();
-                const now = new Date().getTime();
-                const distance = countDownDate - now;
-
+            document.querySelectorAll('.countdown-timer').forEach(el => {
+                const distance = new Date(el.dataset.testDate).getTime() - new Date().getTime();
                 if (distance < 0) {
                     el.innerHTML = `<span class="text-red-600 font-semibold">Exam Finished</span>`;
                     return;
                 }
-
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-                el.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+                el.innerHTML = `${days}d ${hours}h ${minutes}m`;
             });
         }
+        setInterval(updateTimers, 60000); // Update timers every minute
 
-        function filterTable() {
-            const input = document.getElementById('searchInput');
-            const filter = input.value.toLowerCase();
-            const filteredData = universities.filter(uni => uni.name.toLowerCase().includes(filter));
-            populateTable(filteredData);
-            updateTimers(); // Update timers immediately after filtering
-        }
+        // Search filter
+        window.filterTable = populateTable;
 
-        // Initial population of the table
-        window.onload = () => {
-            populateTable(universities);
-            updateTimers();
-            setInterval(updateTimers, 1000); // Update timers every second
-        };
+        // Modal Logic
+        const modal = document.getElementById('form-modal');
+        const saveButton = document.getElementById('save-button');
+        const cancelButton = document.getElementById('cancel-button');
+        
+        document.getElementById('add-new-button').addEventListener('click', () => {
+            document.getElementById('modal-title').innerText = 'Add New University';
+            document.getElementById('edit-id').value = '';
+            document.getElementById('uni-name').value = '';
+            document.getElementById('uni-date').value = '';
+            document.getElementById('uni-circular').value = '';
+            modal.classList.remove('hidden');
+        });
+
+        cancelButton.addEventListener('click', () => modal.classList.add('hidden'));
+
+        // Save new or edited university
+        saveButton.addEventListener('click', async () => {
+            const id = document.getElementById('edit-id').value;
+            const uniData = {
+                name: document.getElementById('uni-name').value,
+                testDateISO: document.getElementById('uni-date').value,
+                circularLink: document.getElementById('uni-circular').value
+            };
+
+            if (!uniData.name || !uniData.testDateISO) {
+                alert("Please fill in the university name and date.");
+                return;
+            }
+
+            if (id) {
+                // Update existing
+                await setDoc(doc(db, "universities", id), uniData);
+            } else {
+                // Add new
+                await addDoc(collection(db, "universities"), uniData);
+            }
+            modal.classList.add('hidden');
+        });
+        
+        // Handle Edit and Delete clicks
+        universityTable.addEventListener('click', (e) => {
+            const target = e.target;
+            const id = target.dataset.id;
+            
+            if (target.classList.contains('edit-button')) {
+                const uni = universities.find(u => u.id === id);
+                document.getElementById('modal-title').innerText = 'Edit University';
+                document.getElementById('edit-id').value = uni.id;
+                document.getElementById('uni-name').value = uni.name;
+                document.getElementById('uni-date').value = uni.testDateISO;
+                document.getElementById('uni-circular').value = uni.circularLink;
+                modal.classList.remove('hidden');
+            }
+            
+            if (target.classList.contains('delete-button')) {
+                if(confirm('Are you sure you want to delete this entry?')) {
+                    deleteDoc(doc(db, "universities", id));
+                }
+            }
+        });
+
+        // Auth listeners
+        document.getElementById('login-button').addEventListener('click', () => {
+            const email = document.getElementById('admin-email').value;
+            const password = document.getElementById('admin-password').value;
+            signInWithEmailAndPassword(auth, email, password)
+                .catch(error => alert("Login failed: " + error.message));
+        });
+
+        document.getElementById('logout-button').addEventListener('click', () => signOut(auth));
+
     </script>
 </body>
 </html>
+
