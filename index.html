@@ -86,7 +86,6 @@
                 <input type="text" id="uni-name" placeholder="University Name & Unit" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                 <input type="date" id="uni-date" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                 <input type="url" id="uni-circular" placeholder="Circular Link (e.g., https://...)" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                <input type="url" id="uni-logo" placeholder="Logo URL (Optional)" class="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
             </div>
             <div class="mt-6 flex justify-end gap-3">
                 <button id="cancel-button" class="bg-slate-200 text-slate-800 font-semibold px-4 py-2 rounded-lg hover:bg-slate-300 transition-colors">Cancel</button>
@@ -101,6 +100,7 @@
         import { getFirestore, collection, onSnapshot, addDoc, doc, deleteDoc, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+        // Your web app's Firebase configuration
         const firebaseConfig = {
           apiKey: "AIzaSyA9ZAX3u7S9zdUL7NJ0hUgALRrKgwbRN5c",
           authDomain: "admission-tracker-bd.firebaseapp.com",
@@ -166,19 +166,10 @@
                     const testDate = new Date(uni.testDateISO + 'T00:00:00');
                     const formattedDate = testDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
                     const rowClass = index % 2 === 0 ? 'bg-white' : 'bg-slate-50/50';
-
-                    const logoHtml = uni.logoUrl 
-                        ? `<img src="${uni.logoUrl}" alt="${uni.name} Logo" class="h-8 w-8 rounded-full mr-4 object-cover">`
-                        : `<div class="h-8 w-8 rounded-full bg-slate-200 flex items-center justify-center mr-4 flex-shrink-0"><span class="font-bold text-slate-500 text-xs">${uni.name.charAt(0)}</span></div>`;
-
+                    
                     let rowHTML = `
                         <tr class="${rowClass}">
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    ${logoHtml}
-                                    <div class="text-sm font-semibold text-slate-900">${uni.name}</div>
-                                </div>
-                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-semibold text-slate-900">${uni.name}</div></td>
                             <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-slate-700">${formattedDate}</div></td>
                             <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-slate-700 countdown-timer" data-test-date="${uni.testDateISO}T09:00:00">Calculating...</td>
                             <td class="px-6 py-4 text-center">
@@ -213,7 +204,7 @@
                 });
             }
             setInterval(updateTimers, 60000);
-            updateTimers();
+            updateTimers(); // Initial call
 
             searchInput.addEventListener('keyup', populateTable);
 
@@ -227,7 +218,6 @@
                 document.getElementById('uni-name').value = '';
                 document.getElementById('uni-date').value = '';
                 document.getElementById('uni-circular').value = '';
-                document.getElementById('uni-logo').value = '';
                 modal.classList.remove('hidden');
             });
 
@@ -238,8 +228,7 @@
                 const uniData = {
                     name: document.getElementById('uni-name').value.trim(),
                     testDateISO: document.getElementById('uni-date').value,
-                    circularLink: document.getElementById('uni-circular').value.trim(),
-                    logoUrl: document.getElementById('uni-logo').value.trim()
+                    circularLink: document.getElementById('uni-circular').value.trim()
                 };
 
                 if (!uniData.name || !uniData.testDateISO) { return; }
@@ -263,7 +252,6 @@
                     document.getElementById('uni-name').value = uni.name;
                     document.getElementById('uni-date').value = uni.testDateISO;
                     document.getElementById('uni-circular').value = uni.circularLink;
-                    document.getElementById('uni-logo').value = uni.logoUrl || '';
                     modal.classList.remove('hidden');
                 }
                 
@@ -289,5 +277,4 @@
     </script>
 </body>
 </html>
-
 
