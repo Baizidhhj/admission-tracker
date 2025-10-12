@@ -306,7 +306,6 @@
                 
                 const filteredData = dataToShow.filter(uni => uni.name.toLowerCase().includes(filter));
 
-                // Clear both views
                 universityTableBody.innerHTML = '';
                 mobileCardContainer.innerHTML = '';
 
@@ -366,11 +365,14 @@
                                     <p class="font-semibold">${countdown === 'Exam Finished' ? `<span class="text-red-500">${countdown}</span>` : `<span class="text-teal-400">${countdown} days left</span>`}</p>
                                 </div>
                             </div>
-                            ${currentUser ? `
-                            <div class="mt-4 border-t border-slate-700 pt-2 text-right">
-                                <button class="edit-button text-blue-400 hover:text-blue-300 font-medium no-propagate text-sm" data-id="${uni.id}">Edit</button>
-                                <button class="delete-button text-red-400 hover:text-red-300 font-medium ml-4 no-propagate text-sm" data-id="${uni.id}">Delete</button>
-                            </div>` : ''}
+                            <div class="mt-4 border-t border-slate-700 pt-3 flex justify-between items-center">
+                                <a href="${uni.circularLink || '#'}" target="_blank" class="inline-block bg-indigo-600 text-white font-semibold py-1 px-4 rounded-full text-xs no-propagate ${!uni.circularLink ? 'opacity-40 cursor-not-allowed bg-slate-400' : 'hover:bg-indigo-700'}">View Circular</a>
+                                ${currentUser ? `
+                                <div class="text-right">
+                                    <button class="edit-button text-blue-400 hover:text-blue-300 font-medium no-propagate text-sm" data-id="${uni.id}">Edit</button>
+                                    <button class="delete-button text-red-400 hover:text-red-300 font-medium ml-4 no-propagate text-sm" data-id="${uni.id}">Delete</button>
+                                </div>` : ''}
+                            </div>
                         </div>
                     `;
                     mobileCardContainer.innerHTML += cardHTML;
