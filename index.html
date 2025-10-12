@@ -96,17 +96,17 @@
     
     <!-- Details Modal -->
     <div id="details-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-lg border border-slate-700 relative">
-            <button id="details-close-button" class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 text-2xl font-bold">&times;</button>
-            <div class="p-6">
-                <div id="details-modal-header" class="flex items-center mb-4">
-                    <!-- Logo and Title will be injected here -->
+        <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl border border-slate-700 relative overflow-hidden">
+            <button id="details-close-button" class="absolute top-3 right-3 z-10 text-slate-400 hover:text-slate-200 text-2xl font-bold">&times;</button>
+            <div class="grid grid-cols-1 md:grid-cols-2">
+                <div id="details-modal-logo-container" class="bg-slate-700/50 flex items-center justify-center p-6 min-h-[250px]">
+                    <!-- Logo will be injected here -->
                 </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div id="details-modal-logo-container" class="flex flex-col items-center justify-center bg-slate-700/50 rounded-lg p-4">
-                        <!-- Logo will be injected here -->
+                <div class="p-6">
+                    <div id="details-modal-header" class="mb-4">
+                        <!-- Title will be injected here -->
                     </div>
-                    <div class="border-t sm:border-t-0 sm:border-l border-slate-700 pl-0 sm:pl-6 pt-6 sm:pt-0">
+                    <div class="border-t border-slate-700 pt-4">
                         <h3 class="font-semibold text-slate-300 mb-2">Mark Distribution</h3>
                         <p id="details-modal-marks" class="text-sm text-slate-400 whitespace-pre-wrap"></p>
                     </div>
@@ -114,6 +114,7 @@
             </div>
         </div>
     </div>
+
 
     <!-- Firebase SDKs -->
     <script type="module">
@@ -300,7 +301,7 @@
 
                     const logoContainer = document.getElementById('details-modal-logo-container');
                     const logoHtml = uni.logoUrl
-                        ? `<img src="${uni.logoUrl}" alt="${uni.name} Logo" class="h-24 w-24 rounded-full object-contain bg-white p-2 shadow-md">`
+                        ? `<img src="${uni.logoUrl}" alt="${uni.name} Logo" class="max-h-40 w-auto object-contain">`
                         : `<div class="h-24 w-24 rounded-full bg-slate-700 flex items-center justify-center flex-shrink-0"><span class="font-bold text-3xl text-slate-400">${uni.name.charAt(0)}</span></div>`;
                     logoContainer.innerHTML = logoHtml;
                     
@@ -322,3 +323,5 @@
     </script>
 </body>
 </html>
+
+
