@@ -12,6 +12,45 @@
         html.dark input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1);
         }
+
+        /* "Linear Flow" Animation */
+        @keyframes rotateGradient {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .animated-gradient-border {
+            position: relative;
+            padding: 2px; /* Border thickness */
+            overflow: hidden;
+            border-radius: 1.2rem;
+            width: 100%;
+        }
+        .animated-gradient-border::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: linear-gradient(0deg, #4285F4, #EA4335, #FBBC05, #34A853, #4285F4);
+            animation: rotateGradient 6s linear infinite;
+        }
+        .animated-gradient-border-inner {
+            background-color: #1f2937; /* slate-800 */
+            border-radius: 1.1rem; 
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Active Tab Styles */
+        .tab-active {
+            border-color: #4f46e5; /* indigo-600 */
+            color: #4f46e5;
+            background-color: #eef2ff; /* indigo-50 */
+        }
+        html.dark .tab-active {
+            border-color: #818cf8; /* indigo-400 */
+            color: #818cf8;
+            background-color: rgba(79, 70, 229, 0.2);
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200 transition-colors duration-300">
@@ -44,6 +83,12 @@
                  <button id="logout-button" class="bg-red-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-red-700 transition-colors shadow-sm ml-2">Logout</button>
             </div>
 
+            <!-- View Toggles -->
+            <div class="mb-6 flex border-b border-slate-700">
+                <button id="all-tab" class="px-4 py-2 font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200">All Universities</button>
+                <button id="fav-tab" class="px-4 py-2 font-semibold border-b-2 border-transparent text-slate-400 hover:text-slate-200">My Favorites</button>
+            </div>
+
             <!-- Search and Table -->
             <div class="relative mb-6">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -56,6 +101,7 @@
                 <table class="min-w-full" id="uniTable">
                     <thead class="border-b border-slate-700">
                         <tr>
+                            <th class="w-12 px-4"></th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">University Name & Unit</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Test Date</th>
                             <th class="px-6 py-4 text-left text-xs font-semibold text-slate-400 uppercase tracking-wider">Time Remaining</th>
@@ -94,21 +140,23 @@
         </div>
     </div>
     
-    <!-- Details Modal -->
+    <!-- Details Modal with Animated Border -->
     <div id="details-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
-        <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-2xl border border-slate-700 relative overflow-hidden">
-            <button id="details-close-button" class="absolute top-3 right-3 z-10 text-slate-400 hover:text-slate-200 text-2xl font-bold">&times;</button>
-            <div class="grid grid-cols-1 md:grid-cols-2">
-                <div id="details-modal-logo-container" class="bg-slate-700/50 flex items-center justify-center p-6 min-h-[250px]">
-                    <!-- Logo will be injected here -->
-                </div>
-                <div class="p-6">
-                    <div id="details-modal-header" class="mb-4">
-                        <!-- Title will be injected here -->
+        <div class="animated-gradient-border w-full max-w-2xl">
+            <div class="animated-gradient-border-inner">
+                <button id="details-close-button" class="absolute top-3 right-3 z-10 text-slate-400 hover:text-slate-200 text-2xl font-bold">&times;</button>
+                <div class="grid grid-cols-1 md:grid-cols-2">
+                    <div id="details-modal-logo-container" class="bg-slate-700/50 flex items-center justify-center p-6 min-h-[250px]">
+                        <!-- Logo will be injected here -->
                     </div>
-                    <div class="border-t border-slate-700 pt-4">
-                        <h3 class="font-semibold text-slate-300 mb-2">Mark Distribution</h3>
-                        <p id="details-modal-marks" class="text-sm text-slate-400 whitespace-pre-wrap"></p>
+                    <div class="p-6">
+                        <div id="details-modal-header" class="mb-4">
+                            <!-- Title will be injected here -->
+                        </div>
+                        <div class="border-t border-slate-700 pt-4">
+                            <h3 class="font-semibold text-slate-300 mb-2">Mark Distribution</h3>
+                            <p id="details-modal-marks" class="text-sm text-slate-400 whitespace-pre-wrap"></p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,12 +186,50 @@
         document.addEventListener('DOMContentLoaded', () => {
             let universities = [];
             let currentUser = null;
+            let favorites = JSON.parse(localStorage.getItem('admissionFavorites')) || [];
+            let currentView = 'all'; // 'all' or 'favorites'
 
             const universityTableBody = document.getElementById('universityData');
             const adminControls = document.getElementById('admin-controls');
             const adminLoginSection = document.getElementById('admin-login-section');
             const adminActionsHeader = document.getElementById('admin-actions-header');
             const searchInput = document.getElementById('searchInput');
+            const allTab = document.getElementById('all-tab');
+            const favTab = document.getElementById('fav-tab');
+
+            function saveFavorites() {
+                localStorage.setItem('admissionFavorites', JSON.stringify(favorites));
+            }
+
+            function toggleFavorite(uniId) {
+                if (favorites.includes(uniId)) {
+                    favorites = favorites.filter(id => id !== uniId);
+                } else {
+                    favorites.push(uniId);
+                }
+                saveFavorites();
+                populateTable();
+            }
+
+            function updateTabs() {
+                if (currentView === 'all') {
+                    allTab.classList.add('tab-active');
+                    favTab.classList.remove('tab-active');
+                } else {
+                    favTab.classList.add('tab-active');
+                    allTab.classList.remove('tab-active');
+                }
+            }
+            
+            allTab.addEventListener('click', () => {
+                currentView = 'all';
+                populateTable();
+            });
+
+            favTab.addEventListener('click', () => {
+                currentView = 'favorites';
+                populateTable();
+            });
 
             document.addEventListener('keydown', (e) => {
                 if ((e.ctrlKey || e.metaKey) && e.key === 'l') {
@@ -174,22 +260,38 @@
             });
             
             function populateTable() {
+                updateTabs();
                 const filter = searchInput.value.toLowerCase();
-                const filteredData = universities.filter(uni => uni.name.toLowerCase().includes(filter));
+                let dataToShow = universities;
+
+                if (currentView === 'favorites') {
+                    dataToShow = universities.filter(uni => favorites.includes(uni.id));
+                }
+                
+                const filteredData = dataToShow.filter(uni => uni.name.toLowerCase().includes(filter));
 
                 universityTableBody.innerHTML = '';
                 if (filteredData.length === 0) {
-                    universityTableBody.innerHTML = `<tr><td colspan="5" class="text-center py-12 px-6 text-slate-400">No universities found. Log in to add one!</td></tr>`;
+                    const message = currentView === 'favorites' 
+                        ? 'You have not added any favorites yet. Click the star icon to add one!'
+                        : 'No universities found. Log in to add one!';
+                    universityTableBody.innerHTML = `<tr><td colspan="6" class="text-center py-12 px-6 text-slate-400">${message}</td></tr>`;
                     return;
                 }
                 
                 filteredData.forEach((uni, index) => {
+                    const isFavorite = favorites.includes(uni.id);
                     const testDate = new Date(uni.testDateISO + 'T00:00:00');
                     const formattedDate = testDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
                     const rowClass = index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-800/60';
                     
                     let rowHTML = `
                         <tr class="cursor-pointer hover:bg-slate-700" data-id="${uni.id}">
+                            <td class="px-4 py-4 text-center">
+                                <button class="favorite-button no-propagate" data-id="${uni.id}">
+                                    <svg class="w-6 h-6 ${isFavorite ? 'text-yellow-400' : 'text-slate-600 hover:text-slate-400'}" fill="${isFavorite ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                                </button>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-semibold text-slate-100">${uni.name}</div></td>
                             <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-slate-300">${formattedDate}</div></td>
                             <td class="px-6 py-4 whitespace-nowrap font-mono text-sm countdown-timer" data-test-date="${uni.testDateISO}T09:00:00">Calculating...</td>
@@ -250,7 +352,6 @@
                 formModal.classList.remove('hidden');
             });
 
-            // Click outside to close logic
             formModal.addEventListener('click', (e) => {
                 if (e.target === formModal) {
                     formModal.classList.add('hidden');
@@ -287,6 +388,14 @@
             
             universityTableBody.addEventListener('click', (e) => {
                 const target = e.target;
+                
+                // Handle favorite toggle
+                const favButton = target.closest('.favorite-button');
+                if (favButton) {
+                    toggleFavorite(favButton.dataset.id);
+                    return;
+                }
+
                 const row = target.closest('tr');
                 if (!row) return;
 
