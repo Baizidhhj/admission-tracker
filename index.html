@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,36 +7,30 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { 
-            font-family: 'Inter', sans-serif; 
-        }
+        body { font-family: 'Inter', sans-serif; }
         .hidden { display: none; }
-        .bg-main-gradient {
-            /* Dark mode gradient */
-            background-image: linear-gradient(to top right, #111827, #1f2937);
-        }
-        /* Style for date picker icon in dark mode */
-        input[type="date"]::-webkit-calendar-picker-indicator {
+        html.dark input[type="date"]::-webkit-calendar-picker-indicator {
             filter: invert(1);
         }
     </style>
 </head>
-<body class="bg-main-gradient text-slate-200">
+<body class="bg-slate-900 text-slate-200 transition-colors duration-300">
 
     <!-- Main Content -->
     <div class="container mx-auto p-4 sm:p-6 lg:p-8 min-h-screen flex flex-col">
-        <header class="text-center mb-10">
+        
+        <header class="text-center mb-10 pt-8">
             <h1 class="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent pb-2">University Admission Dates 2025-26</h1>
             <p class="text-md text-slate-400 mt-2">A real-time guide for all admission test schedules.</p>
         </header>
 
         <main class="flex-grow">
-            <!-- Admin Login Section (HIDDEN BY DEFAULT) -->
-            <div id="admin-login-section" class="mb-6 bg-slate-800/80 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-slate-700 hidden">
+            <!-- Admin Login Section -->
+            <div id="admin-login-section" class="mb-6 bg-slate-800 p-4 rounded-xl shadow-md border border-slate-700 hidden">
                 <h3 class="font-bold mb-3 text-center text-slate-300">Admin Login</h3>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="email" id="admin-email" placeholder="Email" class="flex-grow px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-700 text-white placeholder-slate-400">
-                    <input type="password" id="admin-password" placeholder="Password" class="flex-grow px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-700 text-white placeholder-slate-400">
+                    <input type="email" id="admin-email" placeholder="Email" class="flex-grow px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 transition text-slate-200 placeholder-slate-400">
+                    <input type="password" id="admin-password" placeholder="Password" class="flex-grow px-4 py-2 bg-slate-700 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 transition text-slate-200 placeholder-slate-400">
                     <button id="login-button" class="bg-blue-600 text-white font-semibold px-5 py-2 rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Login</button>
                 </div>
             </div>
@@ -44,7 +38,7 @@
              <!-- Admin Controls -->
             <div id="admin-controls" class="hidden text-right mb-4">
                  <button id="add-new-button" class="bg-green-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors shadow-sm inline-flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16"><path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/><path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" /></svg>
                     Add New
                  </button>
                  <button id="logout-button" class="bg-red-600 text-white font-bold py-2 px-5 rounded-lg hover:bg-red-700 transition-colors shadow-sm ml-2">Logout</button>
@@ -53,12 +47,12 @@
             <!-- Search and Table -->
             <div class="relative mb-6">
                 <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                     <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+                     <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" /></svg>
                 </div>
-                <input type="text" id="searchInput" placeholder="Search for a university..." class="w-full px-4 py-3 pl-11 border border-slate-600 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-800 text-white placeholder-slate-400">
+                <input type="text" id="searchInput" placeholder="Search for a university..." class="w-full px-4 py-3 pl-11 bg-slate-800 border border-slate-700 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-500 transition text-slate-200 placeholder-slate-400">
             </div>
 
-            <div class="overflow-x-auto bg-slate-800/80 backdrop-blur-sm rounded-xl shadow-lg border border-slate-700">
+            <div class="overflow-x-auto bg-slate-800 rounded-xl shadow-md border border-slate-700">
                 <table class="min-w-full" id="uniTable">
                     <thead class="border-b border-slate-700">
                         <tr>
@@ -77,19 +71,21 @@
         </main>
         <footer class="text-center mt-12 text-slate-400 text-sm">
              <p>&copy; 2025 Admission Schedule Tracker. All rights reserved.</p>
-             <p class="mt-1">Created by MD MINHAZUL ISLAM BAIZID</p>
+            <p class="mt-1">Created by MD MINHAZUL ISLAM BAIZID</p>
         </footer>
     </div>
 
     <!-- Add/Edit Modal -->
-    <div id="form-modal" class="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+    <div id="form-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
         <div class="bg-slate-800 rounded-xl shadow-2xl p-6 w-full max-w-md border border-slate-700">
-            <h2 id="modal-title" class="text-2xl font-bold mb-5 text-slate-100">Add New University</h2>
+            <h2 id="modal-title" class="text-2xl font-bold mb-5 text-slate-200">Add New University</h2>
             <input type="hidden" id="edit-id">
             <div class="space-y-4">
-                <input type="text" id="uni-name" placeholder="University Name & Unit" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-700 text-white placeholder-slate-400">
-                <input type="date" id="uni-date" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-700 text-white placeholder-slate-400">
-                <input type="url" id="uni-circular" placeholder="Circular Link (e.g., https://...)" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition bg-slate-700 text-white placeholder-slate-400">
+                <input type="text" id="uni-name" placeholder="University Name & Unit" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 transition bg-slate-700 text-slate-200 placeholder-slate-400">
+                <input type="date" id="uni-date" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 transition bg-slate-700 text-slate-200 placeholder-slate-400">
+                <input type="text" id="uni-circular" placeholder="Circular Link (e.g., https://...)" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 transition bg-slate-700 text-slate-200 placeholder-slate-400">
+                <input type="text" id="uni-logo" placeholder="Logo URL (Optional)" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 transition bg-slate-700 text-slate-200 placeholder-slate-400">
+                <textarea id="uni-marks" placeholder="Mark distribution details..." rows="4" class="w-full px-4 py-2 border border-slate-600 rounded-lg focus:ring-2 focus:ring-indigo-500 transition bg-slate-700 text-slate-200 placeholder-slate-400"></textarea>
             </div>
             <div class="mt-6 flex justify-end gap-3">
                 <button id="cancel-button" class="bg-slate-600 text-slate-200 font-semibold px-4 py-2 rounded-lg hover:bg-slate-500 transition-colors">Cancel</button>
@@ -98,13 +94,33 @@
         </div>
     </div>
     
+    <!-- Details Modal -->
+    <div id="details-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden">
+        <div class="bg-slate-800 rounded-xl shadow-2xl w-full max-w-lg border border-slate-700 relative">
+            <button id="details-close-button" class="absolute top-3 right-3 text-slate-400 hover:text-slate-200 text-2xl font-bold">&times;</button>
+            <div class="p-6">
+                <div id="details-modal-header" class="flex items-center mb-4">
+                    <!-- Logo and Title will be injected here -->
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div id="details-modal-logo-container" class="flex flex-col items-center justify-center bg-slate-700/50 rounded-lg p-4">
+                        <!-- Logo will be injected here -->
+                    </div>
+                    <div class="border-t sm:border-t-0 sm:border-l border-slate-700 pl-0 sm:pl-6 pt-6 sm:pt-0">
+                        <h3 class="font-semibold text-slate-300 mb-2">Mark Distribution</h3>
+                        <p id="details-modal-marks" class="text-sm text-slate-400 whitespace-pre-wrap"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getFirestore, collection, onSnapshot, addDoc, doc, deleteDoc, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-        // Your web app's Firebase configuration
         const firebaseConfig = {
           apiKey: "AIzaSyA9ZAX3u7S9zdUL7NJ0hUgALRrKgwbRN5c",
           authDomain: "admission-tracker-bd.firebaseapp.com",
@@ -117,7 +133,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
         const auth = getAuth(app);
-
+        
         document.addEventListener('DOMContentLoaded', () => {
             let universities = [];
             let currentUser = null;
@@ -169,24 +185,23 @@
                 filteredData.forEach((uni, index) => {
                     const testDate = new Date(uni.testDateISO + 'T00:00:00');
                     const formattedDate = testDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-                    // Alternating dark background for rows
-                    const rowClass = index % 2 === 0 ? 'bg-slate-800/50' : 'bg-slate-900/20';
+                    const rowClass = index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-800/60';
                     
                     let rowHTML = `
-                        <tr class="${rowClass}">
+                        <tr class="cursor-pointer hover:bg-slate-700" data-id="${uni.id}">
                             <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-semibold text-slate-100">${uni.name}</div></td>
                             <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm text-slate-300">${formattedDate}</div></td>
-                            <td class="px-6 py-4 whitespace-nowrap font-mono text-sm text-slate-300 countdown-timer" data-test-date="${uni.testDateISO}T09:00:00">Calculating...</td>
+                            <td class="px-6 py-4 whitespace-nowrap font-mono text-sm countdown-timer" data-test-date="${uni.testDateISO}T09:00:00">Calculating...</td>
                             <td class="px-6 py-4 text-center">
-                                <a href="${uni.circularLink || '#'}" target="_blank" class="inline-block bg-indigo-600 text-white font-semibold py-1 px-4 rounded-full text-xs ${!uni.circularLink ? 'opacity-40 cursor-not-allowed bg-slate-600' : 'hover:bg-indigo-700 transition-colors'}">View</a>
+                                <a href="${uni.circularLink || '#'}" target="_blank" class="inline-block bg-indigo-600 text-white font-semibold py-1 px-4 rounded-full text-xs no-propagate ${!uni.circularLink ? 'opacity-40 cursor-not-allowed bg-slate-400' : 'hover:bg-indigo-700 transition-colors'}">View</a>
                             </td>
                     `;
 
                     if (currentUser) {
                         rowHTML += `
                             <td class="px-6 py-4 text-center whitespace-nowrap">
-                                <button class="edit-button text-blue-400 hover:text-blue-300 font-medium" data-id="${uni.id}">Edit</button>
-                                <button class="delete-button text-red-500 hover:text-red-400 font-medium ml-4" data-id="${uni.id}">Delete</button>
+                                <button class="edit-button text-blue-400 hover:text-blue-300 font-medium no-propagate" data-id="${uni.id}">Edit</button>
+                                <button class="delete-button text-red-400 hover:text-red-300 font-medium ml-4 no-propagate" data-id="${uni.id}">Delete</button>
                             </td>`;
                     }
                     rowHTML += `</tr>`;
@@ -195,27 +210,33 @@
                 updateTimers();
             }
 
+            function calculateCountdown(isoDate) {
+                const distance = new Date(isoDate + 'T09:00:00').getTime() - new Date().getTime();
+                if (distance < 0) return 'Exam Finished';
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                return `${days}d ${hours}h ${minutes}m`;
+            }
+
             function updateTimers() {
                 document.querySelectorAll('.countdown-timer').forEach(el => {
-                    const distance = new Date(el.dataset.testDate).getTime() - new Date().getTime();
-                    if (distance < 0) {
-                        el.innerHTML = `<span class="text-slate-500 font-semibold">Exam Finished</span>`;
-                        return;
-                    }
-                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                    el.innerHTML = `<span class="font-bold text-teal-400">${days}d ${hours}h ${minutes}m</span>`;
+                    const result = calculateCountdown(el.dataset.testDate.split('T')[0]);
+                    el.innerHTML = result === 'Exam Finished' 
+                        ? `<span class="text-red-500 font-semibold">${result}</span>`
+                        : `<span class="font-bold text-teal-400">${result}</span>`;
                 });
             }
             setInterval(updateTimers, 60000);
-            updateTimers(); 
 
             searchInput.addEventListener('keyup', populateTable);
 
-            const modal = document.getElementById('form-modal');
+            // --- Modal Logic ---
+            const formModal = document.getElementById('form-modal');
             const saveButton = document.getElementById('save-button');
             const cancelButton = document.getElementById('cancel-button');
+            const detailsModal = document.getElementById('details-modal');
+            const detailsCloseButton = document.getElementById('details-close-button');
             
             document.getElementById('add-new-button').addEventListener('click', () => {
                 document.getElementById('modal-title').innerText = 'Add New University';
@@ -223,17 +244,22 @@
                 document.getElementById('uni-name').value = '';
                 document.getElementById('uni-date').value = '';
                 document.getElementById('uni-circular').value = '';
-                modal.classList.remove('hidden');
+                document.getElementById('uni-logo').value = '';
+                document.getElementById('uni-marks').value = '';
+                formModal.classList.remove('hidden');
             });
 
-            cancelButton.addEventListener('click', () => modal.classList.add('hidden'));
+            cancelButton.addEventListener('click', () => formModal.classList.add('hidden'));
+            detailsCloseButton.addEventListener('click', () => detailsModal.classList.add('hidden'));
 
             saveButton.addEventListener('click', async () => {
                 const id = document.getElementById('edit-id').value;
                 const uniData = {
                     name: document.getElementById('uni-name').value.trim(),
                     testDateISO: document.getElementById('uni-date').value,
-                    circularLink: document.getElementById('uni-circular').value.trim()
+                    circularLink: document.getElementById('uni-circular').value.trim(),
+                    logoUrl: document.getElementById('uni-logo').value.trim(),
+                    markDistribution: document.getElementById('uni-marks').value.trim()
                 };
 
                 if (!uniData.name || !uniData.testDateISO) { return; }
@@ -243,12 +269,15 @@
                 } else {
                     await addDoc(collection(db, "universities"), uniData);
                 }
-                modal.classList.add('hidden');
+                formModal.classList.add('hidden');
             });
             
             universityTableBody.addEventListener('click', (e) => {
                 const target = e.target;
-                const id = target.dataset.id;
+                const row = target.closest('tr');
+                if (!row) return;
+
+                const id = row.dataset.id;
                 
                 if (target.classList.contains('edit-button')) {
                     const uni = universities.find(u => u.id === id);
@@ -256,27 +285,36 @@
                     document.getElementById('edit-id').value = uni.id;
                     document.getElementById('uni-name').value = uni.name;
                     document.getElementById('uni-date').value = uni.testDateISO;
-                    document.getElementById('uni-circular').value = uni.circularLink;
-                    modal.classList.remove('hidden');
-                }
-                
-                if (target.classList.contains('delete-button')) {
-                    // Custom confirm dialog logic needed here for iframe compatibility
-                    if (confirm('Are you sure you want to delete this entry?')) {
-                         deleteDoc(doc(db, "universities", id));
+                    document.getElementById('uni-circular').value = uni.circularLink || '';
+                    document.getElementById('uni-logo').value = uni.logoUrl || '';
+                    document.getElementById('uni-marks').value = uni.markDistribution || '';
+                    formModal.classList.remove('hidden');
+                } else if (target.classList.contains('delete-button')) {
+                    if(confirm('Are you sure you want to delete this entry?')) {
+                        deleteDoc(doc(db, "universities", id));
                     }
+                } else if (!target.classList.contains('no-propagate')) {
+                    const uni = universities.find(u => u.id === id);
+
+                    document.getElementById('details-modal-header').innerHTML = `<h2 class="text-2xl font-bold text-slate-200">${uni.name}</h2>`;
+
+                    const logoContainer = document.getElementById('details-modal-logo-container');
+                    const logoHtml = uni.logoUrl
+                        ? `<img src="${uni.logoUrl}" alt="${uni.name} Logo" class="h-24 w-24 rounded-full object-contain bg-white p-2 shadow-md">`
+                        : `<div class="h-24 w-24 rounded-full bg-slate-700 flex items-center justify-center flex-shrink-0"><span class="font-bold text-3xl text-slate-400">${uni.name.charAt(0)}</span></div>`;
+                    logoContainer.innerHTML = logoHtml;
+                    
+                    document.getElementById('details-modal-marks').textContent = uni.markDistribution || 'No mark distribution details available.';
+                    detailsModal.classList.remove('hidden');
                 }
             });
 
+            // --- Auth Buttons ---
             document.getElementById('login-button').addEventListener('click', () => {
                 const email = document.getElementById('admin-email').value;
                 const password = document.getElementById('admin-password').value;
                 signInWithEmailAndPassword(auth, email, password)
-                    .catch(error => { 
-                        console.error("Login Error:", error);
-                        // Custom alert/message box logic needed here for iframe compatibility
-                        alert("Login failed. Please check your credentials."); 
-                    });
+                    .catch(error => alert("Login failed. Please check your credentials."));
             });
 
             document.getElementById('logout-button').addEventListener('click', () => signOut(auth));
@@ -284,4 +322,3 @@
     </script>
 </body>
 </html>
-
