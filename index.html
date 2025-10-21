@@ -49,6 +49,18 @@
             transform: scale(1.01);
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
         }
+
+        /* News Ticker Animation */
+        @keyframes marquee {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee 40s linear infinite;
+        }
+        .group:hover .animate-marquee {
+            animation-play-state: paused;
+        }
     </style>
 </head>
 <body class="bg-slate-900 text-slate-200">
@@ -60,6 +72,15 @@
             <h1 class="text-4xl sm:text-5xl font-extrabold bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent pb-2">University Admission Dates 2025-26</h1>
             <p class="text-md text-slate-400 mt-2">A real-time guide for all admission test schedules.</p>
             <p class="text-xs text-red-500 mt-4">💡 Tip: Click on any university row to see more details.</p>
+
+            <!-- News Ticker -->
+            <div class="mt-6 w-full max-w-4xl mx-auto bg-slate-800 rounded-full overflow-hidden shadow-inner border border-slate-700 group">
+                <div class="relative flex overflow-x-hidden">
+                    <p id="news-ticker-content" class="py-2 animate-marquee whitespace-nowrap text-amber-300">
+                        <!-- News content will be injected by JS -->
+                    </p>
+                </div>
+            </div>
         </header>
 
         <main class="flex-grow">
@@ -132,7 +153,7 @@
 
         </main>
         <footer class="text-center mt-12 text-slate-400 text-sm">
-             <p>&copy; 2025 Admission Schedule Tracker. All rights reserved.</p
+             <p>&copy; 2025 Admission Schedule Tracker. All rights reserved.</p>
             <p class="mt-1">Created by MD MINHAZUL ISLAM BAIZID</p>
         </footer>
     </div>
@@ -224,6 +245,22 @@
             const universityContentContainer = document.getElementById('university-content-container');
             const pdfViewSection = document.getElementById('pdf-view-section');
             
+            // --- News Ticker Logic ---
+            const newsItems = [
+                "⚡️বর্তমানে দেশে ৩৭টি সরকারি মেডিকেল কলেজে ৫,৩৮০টি এবং ৭২টি বেসরকারি মেডিকেল কলেজে আসন ৬,৫৫৭টি সরকারি মেডিকেলে ৬০০ এবং বেসরকারি মেডিকেল কলেজে ৬০০ আসন কমানোর প্রস্তাব করেছে।",
+        
+            ];
+
+            function buildNewsTicker() {
+                const newsContainer = document.getElementById('news-ticker-content');
+                if (newsContainer) {
+                    const newsString = newsItems.map(item => `<span class="mx-4">${item}</span>`).join('');
+                    // Duplicate the string for a seamless loop
+                    newsContainer.innerHTML = newsString + newsString;
+                }
+            }
+            buildNewsTicker();
+
             // --- Mock Data Function ---
             function getMockData() {
                 // This data is used as a fallback if Firebase is empty.
@@ -640,4 +677,3 @@
 
 </body>
 </html>
-
