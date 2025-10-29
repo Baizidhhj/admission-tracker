@@ -664,8 +664,8 @@ AppEnd: YYYY-MM-DD`;
                     markDistribution: document.getElementById('uni-marks').value.trim()
                 };
 
-                if (!uniData.name || !uniData.testDateISO || !uniData.appStartDateISO || !uniData.appEndDateISO) { 
-                    alert("Name, Test Date, App Start, and App End dates are required.");
+                if (!uniData.name || !uniData.testDateISO) { 
+                    alert("Name and Test Date are required.");
                     return; 
                 }
 
@@ -735,7 +735,7 @@ AppEnd: YYYY-MM-DD`;
                     : `<div class="h-full w-full bg-slate-700/50 flex items-center justify-center flex-shrink-0"><span class="font-bold text-5xl text-slate-400">${uni.name.charAt(0)}</span></div>`;
                 logoContainer.innerHTML = logoHtml;
                 
-                const appStart = uni.appStartDateISO ? new Date(uni.appStartDateISO + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A';
+                const appStart = uni.appStartDateISO ? new Date(uni.appStartDateISO + 'T00:0Next(00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A';
                 const appEnd = uni.appEndDateISO ? new Date(uni.appEndDateISO + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A';
                 document.getElementById('details-modal-app-dates').textContent = `${appStart} - ${appEnd}`;
 
