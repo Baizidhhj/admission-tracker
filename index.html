@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bangladesh University Admission Dates 2025-26</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display.swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; }
         .hidden { display: none; }
@@ -217,8 +217,8 @@
     <!-- Firebase SDKs -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, onSnapshot, addDoc, doc, deleteDoc, setDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, collection, onSnapshot, addDoc, doc, deleteDoc, setDoc, query, orderBy, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut, setPersistence, browserSessionPersistence } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
         // IMPORTANT: Replace these with your own Firebase project configuration.
         // This config is for demonstration purposes.
@@ -235,7 +235,42 @@
         const db = getFirestore(app);
         const auth = getAuth(app);
         
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
+
+            try {
+                // Set persistence to 'session'
+                await setPersistence(auth, browserSessionPersistence);
+                console.log("Firebase auth persistence set to 'session'.");
+            } catch (error) {
+                console.error("Could not set auth persistence", error);
+            }
+
+            // --- NEW: Force Logout Logic ---
+            // This will check a version number in Firestore. If it's higher than
+            // the one stored in the browser, it will force a logout.
+            // This logs out *everyone* (including your friend) one time.
+            try {
+                const configRef = doc(db, "config", "auth");
+                const configSnap = await getDoc(configRef);
+                
+                let remoteVersion = 1; // Default to 1
+                if (configSnap.exists()) {
+                    remoteVersion = configSnap.data().forceLogoutVersion || 1;
+                }
+
+                const localVersion = parseInt(localStorage.getItem('logoutVersion') || '0', 10);
+
+                if (remoteVersion > localVersion) {
+                    console.warn(`New remote logout version detected (Remote: ${remoteVersion}, Local: ${localVersion}). Forcing logout.`);
+                    await signOut(auth); // Force log out the user
+                    localStorage.setItem('logoutVersion', remoteVersion.toString()); // Update local version
+                }
+            } catch (error) {
+                console.error("Error during force logout check:", error);
+            }
+            // --- END: Force Logout Logic ---
+
+            // All your other code now runs *after* persistence and logout check
             let universities = [];
             let currentUser = null;
             let favorites = JSON.parse(localStorage.getItem('admissionFavorites')) || [];
@@ -429,6 +464,7 @@
                 universityTableBody.innerHTML = `<tr><td colspan="8">${errorMsg}</td></tr>`;
             });
 
+            // This onAuthStateChanged listener now runs *after* persistence and logout check.
             onAuthStateChanged(auth, (user) => {
                 currentUser = user;
                 if (user) {
@@ -495,7 +531,7 @@
                         <tr class="cursor-pointer hover:bg-slate-700/60 transition-transform duration-200" data-id="${uni.id}">
                             <td class="px-4 py-4 text-center">
                                 <button class="favorite-button no-propagate p-2 rounded-full hover:bg-slate-700" data-id="${uni.id}">
-                                    <svg class="w-6 h-6 ${isFavorite ? 'text-yellow-400' : 'text-slate-600 hover:text-slate-400'}" fill="${isFavorite ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                                    <svg class="w-6 h-6 ${isFavorite ? 'text-yellow-400' : 'text-slate-600 hover:text-slate-400'}" fill="${isFavorite ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588 1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
                                 </button>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap"><div class="text-sm font-semibold text-slate-100">${uni.name}</div></td>
@@ -522,7 +558,7 @@
                             <div class="flex items-start justify-between">
                                 <h3 class="font-bold text-lg text-slate-100 pr-4">${uni.name}</h3>
                                 <button class="favorite-button no-propagate flex-shrink-0 p-1 -m-1" data-id="${uni.id}">
-                                     <svg class="w-6 h-6 ${isFavorite ? 'text-yellow-400' : 'text-slate-600 hover:text-slate-400'}" fill="${isFavorite ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                                     <svg class="w-6 h-6 ${isFavorite ? 'text-yellow-400' : 'text-slate-600 hover:text-slate-400'}" fill="${isFavorite ? 'currentColor' : 'none'}" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.783-.57-.38-1.81.588 1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
                                 </button>
                             </div>
                             <div class="mt-4 flex justify-between items-center">
